@@ -1,0 +1,51 @@
+﻿@model romandent.Models.Paciente
+
+@{
+    ViewData["Title"] = "Detalles del Paciente";
+}
+
+<div class="container mt-4">
+    <div class="card shadow">
+        <div class="card-header bg-info text-white">
+            <h3 class="card-title mb-0"><i class="fas fa-user-circle"></i> Ficha del Paciente</h3>
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3 fw-bold">Historia Clínica</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.NumeroHistoriaClinica)</dd>
+
+                <dt class="col-sm-3 fw-bold">Nombre Completo</dt>
+                <dd class="col-sm-9">@Model.Nombres @Model.Apellidos</dd>
+
+                <dt class="col-sm-3 fw-bold">DNI</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.DocumentoIdentidad)</dd>
+
+                <dt class="col-sm-3 fw-bold">Teléfono</dt>
+                <dd class="col-sm-9">
+                    @if (!string.IsNullOrEmpty(Model.Telefono))
+                    {
+                        <a href="tel:@Model.Telefono" class="text-decoration-none">@Model.Telefono</a>
+                    }
+                    else
+                    {
+                        <span class="text-muted">No registrado</span>
+                    }
+                </dd>
+
+                <dt class="col-sm-3 fw-bold">Email</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Email)</dd>
+
+                <dt class="col-sm-3 fw-bold">Edad</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Edad) años</dd>
+            </dl>
+        </div>
+        <div class="card-footer bg-light">
+            <a asp-action="Edit" asp-route-id="@Model?.IdPaciente" class="btn btn-warning">
+                <i class="fas fa-edit"></i> Editar
+            </a>
+            <a asp-action="Index" class="btn btn-secondary ms-2">
+                <i class="fas fa-arrow-left"></i> Volver a la lista
+            </a>
+        </div>
+    </div>
+</div>

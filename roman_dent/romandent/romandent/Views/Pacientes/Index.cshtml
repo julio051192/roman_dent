@@ -1,0 +1,170 @@
+﻿@model IEnumerable<romandent.Models.Paciente>
+
+@{
+    ViewData["Title"] = "Gestión de Pacientes";
+}
+
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1 class="display-6">
+                <i class="bi bi-people-fill text-primary"></i> Gestión de Pacientes
+            </h1>
+            <p class="text-muted">Clínica Dental Romántica Dent</p>
+        </div>
+        <a asp-action="Create" class="btn btn-primary btn-lg">
+            <i class="bi bi-plus-circle"></i> Nuevo Paciente
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="bi bi-check-circle-fill"></i> @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Card de búsqueda -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <form asp-action="Buscar" method="get" class="row g-2">
+                <div class="col-md-10">
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" name="termino" class="form-control"
+                               placeholder="Buscar por nombre, apellido, DNI o historia clínica..."
+                               value="@ViewBag.Termino">
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">
+                        <i class="bi bi-search"></i> Buscar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Card de resultados -->
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0"><i class="bi bi-list-ul"></i> Lista de Pacientes Activos</h5>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th><i class="bi bi-file-earmark-medical"></i> HC</th>
+                            <th><i class="bi bi-person-badge"></i> Paciente</th>
+                            <th><i class="bi bi-card-text"></i> DNI</th>
+                            <th><i class="bi bi-calendar3"></i> Edad</th>
+                            <th><i class="bi bi-telephone"></i> Teléfono</th>
+                            <th><i class="bi bi-envelope"></i> Email</th>
+                            <th><i class="bi bi-activity"></i> Últ. Visita</th>
+                            <th><i class="bi bi-gear"></i> Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null && Model.Any())
+                        {
+                            @foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td><span class="badge bg-secondary">@item.NumeroHistoriaClinica</span></td>
+                                    <td>
+                                        <strong>@item.Apellidos</strong><br />
+                                        <small class="text-muted">@item.Nombres</small>
+                                    </td>
+                                    <td>@item.DocumentoIdentidad</td>
+                                    <td>
+                                        <span class="badge bg-info">@item.Edad años</span>
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.Telefono))
+                                        {
+                                            <a href="tel:@item.Telefono" class="text-decoration-none">
+                                                <i class="bi bi-telephone"></i> @item.Telefono
+                                            </a>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (!string.IsNullOrEmpty(item.Email))
+                                        {
+                                            <a href="mailto:@item.Email" class="text-decoration-none">
+                                                <i class="bi bi-envelope"></i> @item.Email
+                                            </a>
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (item.UltimaVisita.HasValue)
+                                        {
+                                            <small class="text-muted">@item.UltimaVisita.Value.ToString("dd/MM/yyyy")</small>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning">Sin visitas</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <a asp-action="Details" asp-route-id="@item.IdPaciente"
+                                               class="btn btn-outline-info" title="Ver Detalles">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            <a asp-action="Edit" asp-route-id="@item.IdPaciente"
+                                               class="btn btn-outline-warning" title="Editar">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <a asp-action="Delete" asp-route-id="@item.IdPaciente"
+                                               class="btn btn-outline-danger" title="Desactivar">
+                                                <i class="bi bi-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8" class="text-center py-4">
+                                    <div class="alert alert-info">
+                                        <i class="bi bi-info-circle"></i>
+                                        No se encontraron pacientes.
+                                        <a asp-action="Create" class="alert-link">Crear nuevo paciente</a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="card-footer text-muted">
+            <div class="row">
+                <div class="col-md-6">
+                    <i class="bi bi-person-check"></i> Total de pacientes activos: <strong>@(Model?.Count() ?? 0)</strong>
+                </div>
+                <div class="col-md-6 text-end">
+                    @if (!string.IsNullOrEmpty(ViewBag.Termino))
+                    {
+                        <a asp-action="Index" class="btn btn-outline-secondary btn-sm">
+                            <i class="bi bi-arrow-clockwise"></i> Ver todos
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Auto-cerrar alertas después de 5 segundos
+        setTimeout(function() {
+            $('.alert').fadeOut('slow');
+        }, 5000);
+    </script>
+}

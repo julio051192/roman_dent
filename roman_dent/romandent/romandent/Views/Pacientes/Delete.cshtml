@@ -1,0 +1,42 @@
+﻿@model romandent.Models.Paciente
+
+@{
+    ViewData["Title"] = "Desactivar Paciente";
+}
+
+<h1>⚠️ Desactivar Paciente</h1>
+
+<h3>¿Está seguro que desea desactivar este paciente?</h3>
+<div>
+    <hr />
+    <div class="alert alert-warning">
+        <strong>Nota:</strong> El paciente no será eliminado físicamente, solo se marcará como inactivo.
+    </div>
+
+    <dl class="row">
+        <dt class="col-sm-2">Historia Clínica:</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.NumeroHistoriaClinica)</dd>
+
+        <dt class="col-sm-2">Nombre Completo:</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Apellidos), @Html.DisplayFor(model => model.Nombres)</dd>
+
+        <dt class="col-sm-2">DNI:</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.DocumentoIdentidad)</dd>
+
+        <dt class="col-sm-2">Teléfono:</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Telefono)</dd>
+
+        <dt class="col-sm-2">Email:</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.Email)</dd>
+
+        <dt class="col-sm-2">Fecha Registro:</dt>
+        <dd class="col-sm-10">@Html.DisplayFor(model => model.FechaRegistro)</dd>
+    </dl>
+
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="IdPaciente" />
+        <input type="submit" value="Sí, desactivar" class="btn btn-danger" />
+        <a asp-action="Details" asp-route-id="@Model.IdPaciente" class="btn btn-info">Ver Detalles</a>
+        <a asp-action="Index" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>

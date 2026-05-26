@@ -1,0 +1,108 @@
+﻿@{
+    ViewData["Title"] = "Citas - Romántica Dent";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h2 class="mb-0">
+                <i class="bi bi-calendar-check"></i> Gestión de Citas
+            </h2>
+            <p class="mb-0 mt-2">Clínica Dental Romántica Dent</p>
+        </div>
+
+        <div class="card-body">
+            @if (TempData["Message"] != null)
+            {
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    <i class="bi bi-info-circle"></i> @TempData["Message"]
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            }
+
+            <div class="text-center py-5">
+                <div class="display-1 text-muted mb-4">
+                    <i class="bi bi-calendar2-week"></i>
+                </div>
+
+                <h3 class="text-primary">Módulo de Citas</h3>
+                <p class="lead mt-3">
+                    Estamos trabajando en el sistema de gestión de citas.
+                </p>
+
+                <div class="row mt-4 justify-content-center">
+                    <div class="col-md-8">
+                        <div class="alert alert-success">
+                            <h5><i class="bi bi-lightning-charge"></i> Próximas Funcionalidades:</h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <i class="bi bi-calendar-plus text-success"></i>
+                                    <strong>Programar citas</strong> - Nueva citas para pacientes
+                                </li>
+                                <li class="list-group-item">
+                                    <i class="bi bi-clock-history text-primary"></i>
+                                    <strong>Gestionar horarios</strong> - Disponibilidad de odontólogos
+                                </li>
+                                <li class="list-group-item">
+                                    <i class="bi bi-bell text-warning"></i>
+                                    <strong>Recordatorios</strong> - SMS y email automáticos
+                                </li>
+                                <li class="list-group-item">
+                                    <i class="bi bi-clipboard-check text-info"></i>
+                                    <strong>Seguimiento</strong> - Historial de consultas
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-5">
+                    <h5>¿Qué te gustaría hacer?</h5>
+                    <div class="btn-group mt-3" role="group">
+                        <a href="/Pacientes" class="btn btn-outline-primary">
+                            <i class="bi bi-people"></i> Gestionar Pacientes
+                        </a>
+                        <button class="btn btn-primary" disabled>
+                            <i class="bi bi-calendar-plus"></i> Nueva Cita (Próximamente)
+                        </button>
+                        <a href="/Citas/Test" class="btn btn-outline-success">
+                            <i class="bi bi-check-circle"></i> Probar Conexión
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-footer text-muted">
+            <div class="row">
+                <div class="col-md-6">
+                    <i class="bi bi-info-circle"></i>
+                    <small>Desarrollado para Clínica Romántica Dent</small>
+                </div>
+                <div class="col-md-6 text-end">
+                    <small>
+                        <i class="bi bi-clock"></i>
+                        Última actualización: @DateTime.Now.ToString("dd/MM/yyyy HH:mm")
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Auto-cerrar alertas después de 5 segundos
+        setTimeout(function() {
+            $('.alert').fadeOut('slow');
+        }, 5000);
+
+        // Mostrar mensaje de funcionalidad en desarrollo
+        $(document).ready(function() {
+            $('button[disabled]').click(function(e) {
+                e.preventDefault();
+                alert('Esta funcionalidad estará disponible próximamente.');
+            });
+        });
+    </script>
+}
